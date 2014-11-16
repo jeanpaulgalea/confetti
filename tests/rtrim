@@ -1,0 +1,50 @@
+#!/bin/sh
+
+BASEDIR="$( cd "$( dirname "$0" )" && pwd )"
+ROOTDIR="$( dirname "$BASEDIR" )"
+
+PATH=$ROOTDIR/utils:/usr/bin/local:/usr/bin:/bin
+
+set -e
+
+export LC_ALL=C
+
+both=" 	hello world
+foo
+
+bar
+
+ 	"
+
+right="hello world
+foo
+
+bar
+
+ 	"
+
+left=" 	hello world
+foo
+
+bar"
+
+none="hello world
+foo
+
+bar"
+
+# "  ...  " -> "  ..."
+assert "$(rtrim "$both")" "$left"
+assert "$(printf "$both" | rtrim)" "$left"
+
+# "  ..." -> "  ..."
+assert "$(rtrim "$left")" "$left"
+assert "$(printf "$left" | rtrim)" "$left"
+
+# "...  " -> "..."
+assert "$(rtrim "$right")" "$none"
+assert "$(printf "$right" | rtrim)" "$none"
+
+# "..." -> "..."
+assert "$(rtrim "$none")" "$none"
+assert "$(printf "$none" | rtrim)" "$none"

@@ -1,0 +1,25 @@
+#!/bin/sh
+
+# strip whitespace from the beginning of a string.
+#
+# ' '	space character
+# \f	form feed
+# \n	new-line
+# \r	carriage return
+# \t	horizontal tab
+# \v	vertical tab
+
+PATH=/usr/bin/local:/usr/bin:/bin
+
+if [ -n "$1" ]; then
+	string="$1"
+else
+	string="$(cat -)"
+fi
+
+printf '%s' "$string" | awk '{
+	if (NR == 1)
+		sub(/^[[:space:]]*/, "")
+
+	print
+}'
