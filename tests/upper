@@ -1,0 +1,41 @@
+#!/bin/sh
+
+BASEDIR="$( cd "$( dirname "$0" )" && pwd )"
+ROOTDIR="$( dirname "$BASEDIR" )"
+
+PATH=$ROOTDIR/utils:/usr/bin/local:/usr/bin:/bin
+
+set -e
+
+export LC_ALL=C
+
+assert "$(upper HELLO)" HELLO
+assert "$(upper Hello)" HELLO
+assert "$(upper hello)" HELLO
+
+assert "$(printf HELLO | upper)" HELLO
+assert "$(printf Hello | upper)" HELLO
+assert "$(printf hello | upper)" HELLO
+
+assert "$(upper "HELLO WORLD")" "HELLO WORLD"
+assert "$(upper "Hello World")" "HELLO WORLD"
+assert "$(upper "hello world")" "HELLO WORLD"
+
+assert "$(printf "HELLO WORLD" | upper)" "HELLO WORLD"
+assert "$(printf "Hello World" | upper)" "HELLO WORLD"
+assert "$(printf "hello world" | upper)" "HELLO WORLD"
+
+
+export LC_ALL=en_US.utf8
+
+assert "$(upper "ÄÅÖ")" "ÄÅÖ"
+assert "$(upper "äåö")" "ÄÅÖ"
+assert "$(upper "år")" "ÅR"
+assert "$(upper "två")" "TVÅ"
+assert "$(upper "väster")" "VÄSTER"
+
+assert "$(printf "ÄÅÖ" | upper)" "ÄÅÖ"
+assert "$(printf "äåö" | upper)" "ÄÅÖ"
+assert "$(printf "år" | upper)" "ÅR"
+assert "$(printf "två" | upper)" "TVÅ"
+assert "$(printf "väster" | upper)" "VÄSTER"

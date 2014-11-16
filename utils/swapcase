@@ -1,0 +1,36 @@
+#!/bin/sh
+
+# convert upper case to lower case and vice versa.
+
+PATH=/usr/bin/local:/usr/bin:/bin
+
+if [ -n "$1" ]; then
+	string="$1"
+else
+	string="$(cat -)"
+fi
+
+printf '%s' "$string" | awk 'BEGIN {
+	ORS=RS="\n"
+}
+{
+	for (i=1; i<=length($0); i++) {
+		c = substr($0, i, 1)
+
+		if (c == tolower(c)) {
+			c = toupper(c)
+			printf "%s", c
+			continue
+		}
+
+		if (c == toupper(c)) {
+			c = tolower(c)
+			printf "%s", c
+			continue
+		}
+
+		printf "%s", c
+	}
+
+	printf "%s", RS
+}'

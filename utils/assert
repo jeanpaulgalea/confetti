@@ -1,0 +1,22 @@
+#!/bin/sh
+
+# assert two values are equal,
+#	otherwise exit with a friendly error message.
+
+PATH=/usr/bin/local:/usr/bin:/bin
+
+if [ -z "$1" -o -z "$2" ]; then
+	printf "$0: missing arguments\n" 1>&2
+	exit 2
+fi
+
+if [ "$1" = "$2" ]; then
+	exit 0
+fi
+
+# not all `ps` support -p or -pid (e.g. busybox)
+pname="$(ps -o pid,comm \
+			| awk -v ppid=$PPID '{ if ($1 == ppid) print $2 }')"
+
+printf '%s: "%s" != "%s"\n' "$pname" "$1" "$2" 1>&2
+exit 1

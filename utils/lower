@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# convert all characters to lower case.
+
+PATH=/usr/bin/local:/usr/bin:/bin
+
+if [ -n "$1" ]; then
+	string="$1"
+else
+	string="$(cat -)"
+fi
+
+printf '%s' "$string" | awk '{ print tolower($0) }'

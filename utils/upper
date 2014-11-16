@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# convert all characters to upper case.
+
+PATH=/usr/bin/local:/usr/bin:/bin
+
+if [ -n "$1" ]; then
+	string="$1"
+else
+	string="$(cat -)"
+fi
+
+# awk is multibyte
+printf '%s' "$string" | awk '{ print toupper($0) }'

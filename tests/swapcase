@@ -1,0 +1,41 @@
+#!/bin/sh
+
+BASEDIR="$( cd "$( dirname "$0" )" && pwd )"
+ROOTDIR="$( dirname "$BASEDIR" )"
+
+PATH=$ROOTDIR/utils:/usr/bin/local:/usr/bin:/bin
+
+set -e
+
+export LC_ALL=C
+
+assert "$(swapcase HELLO)" hello
+assert "$(swapcase Hello)" hELLO
+assert "$(swapcase hello)" HELLO
+
+assert "$(printf HELLO | swapcase)" hello
+assert "$(printf Hello | swapcase)" hELLO
+assert "$(printf hello | swapcase)" HELLO
+
+assert "$(swapcase "HELLO WORLD")" "hello world"
+assert "$(swapcase "Hello World")" "hELLO wORLD"
+assert "$(swapcase "hello world")" "HELLO WORLD"
+
+assert "$(printf "HELLO WORLD" | swapcase)" "hello world"
+assert "$(printf "Hello World" | swapcase)" "hELLO wORLD"
+assert "$(printf "hello world" | swapcase)" "HELLO WORLD"
+
+
+export LC_ALL=en_US.utf8
+
+assert "$(swapcase "ÄÅÖ")" "äåö"
+assert "$(swapcase "äåö")" "ÄÅÖ"
+assert "$(swapcase "år")" "ÅR"
+assert "$(swapcase "två")" "TVÅ"
+assert "$(swapcase "väster")" "VÄSTER"
+
+assert "$(printf "ÄÅÖ" | swapcase)" "äåö"
+assert "$(printf "äåö" | swapcase)" "ÄÅÖ"
+assert "$(printf "år" | swapcase)" "ÅR"
+assert "$(printf "två" | swapcase)" "TVÅ"
+assert "$(printf "väster" | swapcase)" "VÄSTER"
